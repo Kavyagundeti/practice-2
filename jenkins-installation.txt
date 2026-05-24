@@ -1,0 +1,162 @@
+# Jenkins Installation Steps — Amazon Linux 2023
+
+## Step 1 — Update System
+
+```bash id="s1"
+sudo dnf update -y
+```
+
+---
+
+## Step 2 — Install Java 21
+
+```bash id="s2"
+sudo dnf install java-21-amazon-corretto -y
+```
+
+Verify:
+
+```bash id="s3"
+java -version
+```
+
+---
+
+## Step 3 — Add Jenkins Repository
+
+```bash id="s4"
+sudo wget -O /etc/yum.repos.d/jenkins.repo \
+https://pkg.jenkins.io/redhat-stable/jenkins.repo
+```
+
+---
+
+## Step 4 — Import Jenkins Key
+
+```bash id="s5"
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+```
+
+---
+
+## Step 5 — Install Jenkins
+
+```bash id="s6"
+sudo dnf install jenkins -y
+```
+
+---
+
+## Step 6 — Configure Java Path
+
+```bash id="s7"
+sudo mkdir -p /etc/systemd/system/jenkins.service.d
+```
+
+```bash id="s8"
+sudo nano /etc/systemd/system/jenkins.service.d/override.conf
+```
+
+Paste:
+
+```ini id="s9"
+[Service]
+Environment="JAVA_HOME=/usr/lib/jvm/java-21-amazon-corretto.x86_64"
+```
+
+Save:
+
+* CTRL + O
+* Enter
+* CTRL + X
+
+---
+
+## Step 7 — Reload Systemd
+
+```bash id="s10"
+sudo systemctl daemon-reexec
+```
+
+```bash id="s11"
+sudo systemctl daemon-reload
+```
+
+---
+
+## Step 8 — Enable Jenkins
+
+```bash id="s12"
+sudo systemctl enable jenkins
+```
+
+---
+
+## Step 9 — Start Jenkins
+
+```bash id="s13"
+sudo systemctl start jenkins
+```
+
+---
+
+## Step 10 — Check Jenkins Status
+
+```bash id="s14"
+sudo systemctl status jenkins
+```
+
+Expected:
+
+```bash id="s15"
+active (running)
+```
+
+---
+
+## Step 11 — Get Jenkins Password
+
+```bash id="s16"
+sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+```
+
+---
+
+## Step 12 — Open Jenkins
+
+```text id="s17"
+http://YOUR_PUBLIC_IP:8080
+```
+###########################################################################################################################################
+
+##commands to install jenkins
+
+sudo dnf update -y
+sudo wget -O /etc/yum.repos.d/jenkins.repo \
+https://pkg.jenkins.io/rpm-stable/jenkins.repo
+
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+
+sudo dnf install fontconfig java-21-amazon-corretto -y
+
+sudo dnf install jenkins -y
+
+sudo mkdir -p /etc/systemd/system/jenkins.service.d
+
+sudo nano /etc/systemd/system/jenkins.service.d/override.conf
+
+Paste:
+[Service]
+Environment="JAVA_HOME=/usr/lib/jvm/java-21-amazon-corretto.x86_64"
+
+
+sudo systemctl daemon-reexec
+
+sudo systemctl daemon-reload
+
+sudo systemctl enable jenkins
+
+sudo systemctl start jenkins
+
+sudo systemctl status jenkins
+
